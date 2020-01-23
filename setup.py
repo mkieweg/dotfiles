@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+import sys
 from shutil import which
 import platform
 import subprocess
@@ -8,32 +10,66 @@ def exists(name):
     return which(name) is not None
 
 
+def install(name):
+    proc = subprocess.Popen("sudo apt install -y " + name, shell=True)
+    try:
+        outs, errs = proc.communicate(timeout=15)
+    except TimeoutError:
+        proc.kill()
+        exit("Failed ti install " + name)
+    proc.wait()
+
+
 platform = platform.system()
-os.chdir("~")
-if not exists("brew") and platform == "darwin":
-    subprocess.run("xcode-select --install")
-    subprocess.run('/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+homedir = os.getenv("HOME")
+os.chdir(homedir)
+if not exists("brew") and platform == "Darwin":
+    xcode = subprocess.Popen("xcode-select --install", shell=True, stdin=None)
+    xcode.wait()
+    brew = subprocess.Popen(
+        '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
+        shell=True, stdin=None)
+    brew.wait()
 if not exists("git"):
-    if platform == "linux":
-        subprocess.run("sudo apt intall git")
+    if platform == "Linux":
+        install("git")
 if not exists("zsh"):
-    if platform == "linux":
-        subprocess.run("sudo apt install zsh")
-    elif platform == "darwin":
-        subprocess.run("brew install zsh")
-    subprocess.run("chsh -s $(which zsh)")
-subprocess.run('sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"')
+    if platform == "Linux":
+        install("zsh")
+    elif platform == "Darwin":
+        zsh = subprocess.Popen("brew install zsh", shell=True, stdin=None)
+        zsh.wait()
 if not exists("tmux"):
-    if platform == "linux":
-        subprocess.run("sudo apt install tmux")
-    elif platform == "darwin":
-        subprocess.run("brew install tmux")
-subprocess.run("git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack")
-subprocess.run("git clone https://github.com/boisjacques/fonts.git")
-subprocess.run("fonts/install.sh")
-subprocess.run("git clone https://github.com/boisjacques/tmux-themepack.git")
-if platform == "linux":
-    os.symlink("~/dotfiles/linux-zshrc", "~/.zshrc")
-if platform == "darwin":
-    os.symlink("~/dotfiles/macos-zshrc", "~/.zshrc")
-os.symlink("~/dotfiles/tmux.conf", "~/.tmux.conf")
+    if platform == "Linux":
+        install("tmux")
+    elif platform == "Darwin":
+        tmux = subprocess.Popen("brew install tmux", shell=True, stdin=None)
+        tmux.wait()
+
+chsh = subprocess.Popen("chsh -s $(which zsh)", shell=True, stdin=None)
+chsh.wait()
+installOmz = subprocess.Popen(
+    "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"", shell=True,
+    stdin=None)
+installOmz.wait()
+tmuxThemes = subprocess.Popen("git clone https://github.com/boisjacques/tmux-themepack.git ~/.tmux-themepack",
+                              shell=True,
+                              stdin=None)
+tmuxThemes.wait()
+fonts = subprocess.Popen("git clone https://github.com/boisjacques/fonts.git", shell=True, stdin=None)
+fonts.wait()
+fontInstall = subprocess.Popen("fonts/install.sh", shell=True, stdin=None)
+fontInstall.wait()
+try:
+    if platform == "Linux":
+        os.symlink(homedir + "/dotfiles/linux-zshrc", homedir + "/.zshrc")
+    if platform == "Darwin":
+        os.symlink(homedir + "/dotfiles/macos-zshrc", homedir + "/.zshrc")
+except (FileNotFoundError, FileExistsError):
+    print("Cannot create zshrc symlink\n", sys.exc_info()[0])
+    print("UID: ", os.getuid())
+try:
+    os.symlink(homedir + "/dotfiles/tmux.conf", homedir + "/.tmux.conf")
+except (FileNotFoundError, FileExistsError):
+    print("Cannot create tmux-conf symlink\n", sys.exc_info()[0])
+    print("UID: ", os.getuid())

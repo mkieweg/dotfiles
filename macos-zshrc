@@ -1,15 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$PATH:/usr/local/Cellar/mtr/0.92/sbin
-export PATH=~/anaconda2/bin:$PATH
-export PATH=/usr/local/anaconda3/bin:"$PATH"
-export PATH=~/go/bin:"$PATH"
 export PATH=~/.tmux-scripts:"$PATH"
 export PATH=~/go/bin:"$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=df3a9f42a14f7abd328ae32ae86d30753a4fbc92
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/mk/.oh-my-zsh
+export ZSH=/Users/`whoami`/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
