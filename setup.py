@@ -37,8 +37,8 @@ if not exists("zsh"):
     if platform == "Linux":
         install("zsh")
     elif platform == "FreeBSD":
-	zsh = subprocess.Popen(sudo pkg install zsh, shell=True, stdin=None)
-	zsh.wait()
+        zsh = subprocess.Popen(sudo pkg install zsh, shell=True, stdin=None)
+        zsh.wait()
     elif platform == "Darwin":
         zsh = subprocess.Popen("brew install zsh", shell=True, stdin=None)
         zsh.wait()
@@ -46,8 +46,8 @@ if not exists("tmux"):
     if platform == "Linux":
         install("tmux")
     elif platform == "FreeBSD":
-	tmux = subprocess.Popen(sudo pkg install tmux, shell=True, stdin=None)
-	tmux.wait()
+        tmux = subprocess.Popen(sudo pkg install tmux, shell=True, stdin=None)
+        tmux.wait()
     elif platform == "Darwin":
         tmux = subprocess.Popen("brew install tmux", shell=True, stdin=None)
         tmux.wait()
