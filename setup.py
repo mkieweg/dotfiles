@@ -36,12 +36,18 @@ if not exists("git"):
 if not exists("zsh"):
     if platform == "Linux":
         install("zsh")
+    elif platform == "FreeBSD":
+	zsh = subprocess.Popen(sudo pkg install zsh, shell=True, stdin=None)
+	zsh.wait()
     elif platform == "Darwin":
         zsh = subprocess.Popen("brew install zsh", shell=True, stdin=None)
         zsh.wait()
 if not exists("tmux"):
     if platform == "Linux":
         install("tmux")
+    elif platform == "FreeBSD":
+	tmux = subprocess.Popen(sudo pkg install tmux, shell=True, stdin=None)
+	tmux.wait()
     elif platform == "Darwin":
         tmux = subprocess.Popen("brew install tmux", shell=True, stdin=None)
         tmux.wait()
@@ -60,6 +66,8 @@ fonts = subprocess.Popen("git clone https://github.com/boisjacques/fonts.git", s
 fonts.wait()
 fontInstall = subprocess.Popen("fonts/install.sh", shell=True, stdin=None)
 fontInstall.wait()
+os.remove(homedir + "/.zshrc")
+os.remove(homedir + "/.tmux.conf)
 try:
     if platform == "Linux":
         os.symlink(homedir + "/dotfiles/linux-zshrc", homedir + "/.zshrc")
