@@ -37,7 +37,7 @@ if not exists("zsh"):
     if platform == "Linux":
         install("zsh")
     elif platform == "FreeBSD":
-        zsh = subprocess.Popen(sudo pkg install zsh, shell=True, stdin=None)
+        zsh = subprocess.Popen("sudo pkg install zsh", shell=True, stdin=None)
         zsh.wait()
     elif platform == "Darwin":
         zsh = subprocess.Popen("brew install zsh", shell=True, stdin=None)
@@ -46,7 +46,7 @@ if not exists("tmux"):
     if platform == "Linux":
         install("tmux")
     elif platform == "FreeBSD":
-        tmux = subprocess.Popen(sudo pkg install tmux, shell=True, stdin=None)
+        tmux = subprocess.Popen("sudo pkg install tmux", shell=True, stdin=None)
         tmux.wait()
     elif platform == "Darwin":
         tmux = subprocess.Popen("brew install tmux", shell=True, stdin=None)
@@ -67,7 +67,7 @@ fonts.wait()
 fontInstall = subprocess.Popen("fonts/install.sh", shell=True, stdin=None)
 fontInstall.wait()
 os.remove(homedir + "/.zshrc")
-os.remove(homedir + "/.tmux.conf)
+os.remove(homedir + "/.tmux.conf")
 try:
     if platform == "Linux":
         os.symlink(homedir + "/dotfiles/linux-zshrc", homedir + "/.zshrc")
