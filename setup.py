@@ -66,8 +66,14 @@ fonts = subprocess.Popen("git clone https://github.com/boisjacques/fonts.git", s
 fonts.wait()
 fontInstall = subprocess.Popen("fonts/install.sh", shell=True, stdin=None)
 fontInstall.wait()
-os.remove(homedir + "/.zshrc")
-os.remove(homedir + "/.tmux.conf")
+try:
+    os.remove(homedir + "/.zshrc")
+except OSError:
+    pass
+try:
+    os.remove(homedir + "/.tmux.conf")
+except OSError:
+    pass
 try:
     if platform == "Linux":
         os.symlink(homedir + "/dotfiles/linux-zshrc", homedir + "/.zshrc")
