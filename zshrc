@@ -6,6 +6,8 @@ export ZDOTDIR=$HOME/.config/zsh
 export HOMEBREW_GITHUB_API_TOKEN=
 export ZSH=$HOME/.oh-my-zsh
 
+export LC_ALL=en_US.UTF-8
+
 plugins=(
   git
   golang
