@@ -16,7 +16,7 @@ def install(name):
         outs, errs = proc.communicate(timeout=15)
     except TimeoutError:
         proc.kill()
-        exit("Failed ti install " + name)
+        exit("Failed to install " + name)
     proc.wait()
 
 
@@ -51,6 +51,13 @@ if not exists("tmux"):
     elif platform == "Darwin":
         tmux = subprocess.Popen("brew install tmux", shell=True, stdin=None)
         tmux.wait()
+if not exists("starship"):
+    if platform == "FreeBSD":
+        starship = subprocess.Popen("sudo pkg install starship", shell=True, stdin=None)
+        starship.wait()
+    else:
+        starship = subprocess.Popen("curl -fsSL https://starship.rs/install.sh | bash", shell=True, stdin=None)
+        starship.wait()
 
 chsh = subprocess.Popen("chsh -s $(which zsh)", shell=True, stdin=None)
 chsh.wait()
@@ -62,10 +69,6 @@ tmuxThemes = subprocess.Popen("git clone https://github.com/boisjacques/tmux-the
                               shell=True,
                               stdin=None)
 tmuxThemes.wait()
-fonts = subprocess.Popen("git clone https://github.com/boisjacques/fonts.git", shell=True, stdin=None)
-fonts.wait()
-fontInstall = subprocess.Popen("fonts/install.sh", shell=True, stdin=None)
-fontInstall.wait()
 try:
     os.remove(homedir + "/.zshrc")
 except OSError:
@@ -75,10 +78,7 @@ try:
 except OSError:
     pass
 try:
-    if platform == "Linux":
-        os.symlink(homedir + "/dotfiles/linux-zshrc", homedir + "/.zshrc")
-    if platform == "Darwin":
-        os.symlink(homedir + "/dotfiles/macos-zshrc", homedir + "/.zshrc")
+    os.symlink(homedir + "/dotfiles/zshrc", homedir + "/.zshrc")
 except (FileNotFoundError, FileExistsError):
     print("Cannot create zshrc symlink\n", sys.exc_info()[0])
     print("UID: ", os.getuid())
