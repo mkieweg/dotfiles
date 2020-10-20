@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 SESSION=`basename $PWD`
 
 tmux -2 new-session -d -s $SESSION
