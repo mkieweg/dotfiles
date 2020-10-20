@@ -65,10 +65,20 @@ installOmz = subprocess.Popen(
     "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"", shell=True,
     stdin=None)
 installOmz.wait()
-tmuxThemes = subprocess.Popen("git clone https://github.com/boisjacques/tmux-themepack.git ~/.tmux-themepack",
+zshAutosuggestions = subprocess.Popen("git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions",
                               shell=True,
                               stdin=None)
-tmuxThemes.wait()
+zshAutosuggestions.wait()
+zshHighlighting = subprocess.Popen("git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting",
+                              shell=True,
+                              stdin=None)
+zshHighlighting.wait()
+installTpm = subprocess.Popen("git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm",
+                              shell=True,
+                              stdin=None)
+installTpm.wait()
+
+
 try:
     os.remove(homedir + "/.zshrc")
 except OSError:
