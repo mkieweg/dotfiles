@@ -24,7 +24,7 @@ if [[ "$TMUX" == "" ]] && [[ "$SSH_CONNECTION" != "" ]]; then
   if tmux has-session 2>/dev/null; then
     tmux a
   else
-    $HOME/dotfiles/tmuxgo
+    tmux
   fi
 fi
 
