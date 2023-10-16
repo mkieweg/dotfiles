@@ -10,7 +10,7 @@ def exists(name):
     return which(name) is not None
 
 
-def install(name):
+def linuxInstall(name):
     proc = subprocess.Popen("sudo apt install -y " + name, shell=True)
     try:
         outs, errs = proc.communicate(timeout=15)
@@ -32,10 +32,10 @@ if not exists("brew") and platform == "Darwin":
     brew.wait()
 if not exists("git"):
     if platform == "Linux":
-        install("git")
+        linuxInstall("git")
 if not exists("zsh"):
     if platform == "Linux":
-        install("zsh")
+        linuxInstall("zsh")
     elif platform == "FreeBSD":
         zsh = subprocess.Popen("sudo pkg install zsh", shell=True, stdin=None)
         zsh.wait()
@@ -44,7 +44,7 @@ if not exists("zsh"):
         zsh.wait()
 if not exists("tmux"):
     if platform == "Linux":
-        install("tmux")
+        linuxInstall("tmux")
     elif platform == "FreeBSD":
         tmux = subprocess.Popen("sudo pkg install tmux", shell=True, stdin=None)
         tmux.wait()
@@ -55,8 +55,11 @@ if not exists("starship"):
     if platform == "FreeBSD":
         starship = subprocess.Popen("sudo pkg install starship", shell=True, stdin=None)
         starship.wait()
+    elif platform == "Darwin":
+        starship = subprocess.Popen("brew install starship", shell=True, stdin=None)
+        starship.wait()
     else:
-        starship = subprocess.Popen("curl -fsSL https://starship.rs/install.sh | bash", shell=True, stdin=None)
+        starship = subprocess.Popen("curl -fsSL https://starship.rs/install.sh | sh", shell=True, stdin=None)
         starship.wait()
 
 chsh = subprocess.Popen("chsh -s $(which zsh)", shell=True, stdin=None)
