@@ -42,6 +42,15 @@ if not exists("zsh"):
     elif platform == "Darwin":
         zsh = subprocess.Popen("brew install zsh", shell=True, stdin=None)
         zsh.wait()
+if not exists("fzf"):
+    if platform == "Linux":
+        linuxInstall("fzf")
+    elif platform == "FreeBSD":
+        fzf = subprocess.Popen("sudo pkg install fzf", shell=True, stdin=None)
+        fzf.wait()
+    elif platform == "Darwin":
+        fzf = subprocess.Popen("brew install fzf", shell=True, stdin=None)
+        fzf.wait()
 if not exists("tmux"):
     if platform == "Linux":
         linuxInstall("tmux")
