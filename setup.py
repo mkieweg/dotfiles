@@ -27,7 +27,7 @@ if not exists("brew") and platform == "Darwin":
     xcode = subprocess.Popen("xcode-select --install", shell=True, stdin=None)
     xcode.wait()
     brew = subprocess.Popen(
-        '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
+        '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
         shell=True, stdin=None)
     brew.wait()
 if not exists("git"):
