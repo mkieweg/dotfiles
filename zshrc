@@ -3,8 +3,8 @@ export PATH=$HOME/dotfiles:$PATH
 export PATH=$HOME/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 
-export ZDOTDIR=$HOME/.config/zsh
-export HOMEBREW_GITHUB_API_TOKEN=
+[[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
 export ZSH=$HOME/.oh-my-zsh
 export LC_ALL=en_US.UTF-8
 
@@ -37,16 +37,13 @@ fi
 
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
- 
+
     autoload -Uz compinit
     compinit
  fi
- 
+
 source <(kubectl completion zsh)
 
 eval "source <("/opt/homebrew/bin/starship" init zsh --print-full-init)"
 
-HISTFILE=~/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
-setopt SHARE_HISTORY 
+eval "$(atuin init zsh)"
