@@ -15,6 +15,7 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
   kubectl
+  docker
   aws
   brew
   fzf
@@ -45,5 +46,6 @@ if type brew &>/dev/null; then
 source <(kubectl completion zsh)
 
 eval "source <("/opt/homebrew/bin/starship" init zsh --print-full-init)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(atuin init zsh)"
